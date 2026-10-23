@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Orbitron, Plus_Jakarta_Sans } from "next/font/google";
+import { MusicToggle } from "@/components/ui/music-toggle";
 import "./globals.css";
 
 const orbitron = Orbitron({ variable: "--font-orbitron", subsets: ["latin"] });
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="id">
       <body className={`${orbitron.variable} ${jetbrains.variable} ${jakarta.variable} antialiased`}>
         {children}
+        <MusicToggle />
       </body>
     </html>
   );
