@@ -5,23 +5,18 @@
  * Ciputra World survey. The final vault code is built automatically from the six
  * `digit` values (in order), so it always stays in sync.
  *
+ * This file is server-only: answers and digits are never sent to players' phones —
+ * the phone asks /api/verify instead. Scoring & lockout settings live in game.ts.
+ *
  * To add/replace a clue photo, put the file in /public/clues/ and point `clueImage.src` to it.
  */
 
-export type OptionKey = "A" | "B" | "C" | "D";
+import "server-only";
+import { MISSION_COUNT, type OptionKey, type PublicMission } from "./game";
 
-export type Mission = {
-  id: number;
-  code: string;
-  title: string;
-  category: string;
-  lore: string;
-  task?: string;
-  question: string;
-  options: Record<OptionKey, string>;
+export type Mission = PublicMission & {
   answer: OptionKey;
   digit: string;
-  clueImage?: { src: string; alt: string; width: number; height: number };
 };
 
 export const MISSIONS: Mission[] = [
@@ -111,10 +106,29 @@ export const MISSIONS: Mission[] = [
   },
 ];
 
+if (MISSIONS.length !== MISSION_COUNT) {
+  throw new Error(
+    `missions.ts has ${MISSIONS.length} missions but MISSION_COUNT in game.ts is ${MISSION_COUNT}. Update both.`,
+  );
+}
+for (const m of MISSIONS) {
+  if (!/^\d$/.test(m.digit)) throw new Error(`${m.code}: digit must be a single number 0-9.`);
+}
+
 /** "482615" with the default data. */
 export const FINAL_VAULT_CODE = MISSIONS.map((m) => m.digit).join("");
 
-export const POINTS_PER_MISSION = 100;
-export const VAULT_POINTS = 200;
-export const MAX_SCORE = MISSIONS.length * POINTS_PER_MISSION + VAULT_POINTS;
-export const LOCKOUT_MS = 10_000;
+/** Mission content without answers/digits — the only version sent to the browser. */
+export function getPublicMissions(): PublicMission[] {
+  return MISSIONS.map((m) => ({
+    id: m.id,
+    code: m.code,
+    title: m.title,
+    category: m.category,
+    lore: m.lore,
+    task: m.task,
+    question: m.question,
+    options: m.options,
+    clueImage: m.clueImage,
+  }));
+}

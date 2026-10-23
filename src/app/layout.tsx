@@ -7,10 +7,27 @@ const orbitron = Orbitron({ variable: "--font-orbitron", subsets: ["latin"] });
 const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"] });
 const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"] });
 
+// Absolute base for link-preview image URLs (Vercel sets this automatically in production).
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
+const title = "CG FUN 2026 — Operation: Find the Code";
+const description =
+  "Misi rahasia di Ciputra World Surabaya. Bentuk tim, pecahkan 6 petunjuk, dan buka brankas FILE 07. Daftar jadi agent sekarang!";
+
 export const metadata: Metadata = {
-  title: "CG FUN 2026 — Operation: Find the Code",
-  description:
-    "Misi rahasia di Ciputra World Surabaya. Bentuk tim, pecahkan 6 petunjuk, dan buka brankas FILE 07.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    siteName: "CG FUN 2026",
+    locale: "id_ID",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 export const viewport: Viewport = {

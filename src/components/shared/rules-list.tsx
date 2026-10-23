@@ -1,5 +1,5 @@
 import { GAME_RULES } from "@/config/event";
-import { MAX_SCORE, MISSIONS, POINTS_PER_MISSION, VAULT_POINTS } from "@/config/missions";
+import { MAX_SCORE, MISSION_COUNT, POINTS_PER_MISSION, VAULT_POINTS } from "@/config/game";
 
 export function RulesList() {
   return (
@@ -16,7 +16,7 @@ export function RulesList() {
 
 export function ScoringTable() {
   const rows = [
-    { label: `Mission 01–0${MISSIONS.length}`, detail: `+${POINTS_PER_MISSION} / misi`, pts: MISSIONS.length * POINTS_PER_MISSION },
+    { label: `Mission 01–0${MISSION_COUNT}`, detail: `+${POINTS_PER_MISSION} / misi`, pts: MISSION_COUNT * POINTS_PER_MISSION },
     { label: "Brankas FILE 07", detail: "Kode final benar", pts: VAULT_POINTS },
   ];
   return (

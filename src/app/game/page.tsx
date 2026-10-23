@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GameTerminal } from "@/components/game/game-terminal";
 import { TerminalShell } from "@/components/ui/hud";
+import { getPublicMissions } from "@/config/missions";
 
 export const metadata: Metadata = {
   title: "Field Terminal — CG FUN 2026",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export default function GamePage() {
   return (
     <TerminalShell>
-      <GameTerminal />
+      <GameTerminal missions={getPublicMissions()} />
     </TerminalShell>
   );
 }

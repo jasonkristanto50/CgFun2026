@@ -28,6 +28,15 @@ export type SheetsResponse = {
   [key: string]: unknown;
 };
 
+/** `status` is the proxy's HTTP status; network failures throw a plain TypeError instead. */
+export class SheetsError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
 /** POSTs to our /api/sheets proxy. Throws if the proxy or Apps Script reports an error. */
 export async function postToSheets(
   payload: RsvpPayload | GamePayload,
@@ -41,7 +50,7 @@ export async function postToSheets(
   });
   const data = (await res.json().catch(() => ({}))) as SheetsResponse;
   if (!res.ok || data.result === "error") {
-    throw new Error(data.error ?? `Request failed (${res.status})`);
+    throw new SheetsError(data.error ?? `Request failed (${res.status})`, res.status);
   }
   return data;
 }

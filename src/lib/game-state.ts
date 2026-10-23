@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MISSIONS } from "@/config/missions";
+import { MISSION_COUNT } from "@/config/game";
 
 export type Screen = "start" | "mission" | "vault" | "complete";
 
@@ -39,7 +39,7 @@ function load(): GameState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return INITIAL_GAME_STATE;
     const parsed = { ...INITIAL_GAME_STATE, ...(JSON.parse(raw) as Partial<GameState>) };
-    parsed.missionIndex = Math.min(Math.max(0, parsed.missionIndex), MISSIONS.length - 1);
+    parsed.missionIndex = Math.min(Math.max(0, parsed.missionIndex), MISSION_COUNT - 1);
     return parsed;
   } catch {
     return INITIAL_GAME_STATE;
