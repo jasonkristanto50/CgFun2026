@@ -7,10 +7,10 @@
 export const TEAMS = [
   { name: "Alpha", color: "#34d399" },
   { name: "Bravo", color: "#f59e0b" },
-  { name: "Charlie", color: "#60a5fa" },
+  { name: "Sigma", color: "#60a5fa" },
   { name: "Delta", color: "#f472b6" },
   { name: "Echo", color: "#a78bfa" },
-  { name: "Foxtrot", color: "#f87171" },
+  { name: "Kiko", color: "#f87171" },
 ];
 
 export const MIN_TEAMS = 4;
