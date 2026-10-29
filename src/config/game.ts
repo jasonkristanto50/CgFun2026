@@ -3,6 +3,12 @@
  * Mission content and answers live in missions.ts, which never leaves the server.
  */
 
+/**
+ * Master switch for the mission game (/game, /api/verify, GAME rows to Sheets).
+ * The site is RSVP + team maker only for now — flip to true to bring the game back.
+ */
+export const GAME_ENABLED = false;
+
 export type OptionKey = "A" | "B" | "C" | "D";
 export const OPTION_KEYS: OptionKey[] = ["A", "B", "C", "D"];
 

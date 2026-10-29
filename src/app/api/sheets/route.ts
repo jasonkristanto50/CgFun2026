@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { GAME_ENABLED } from "@/config/game";
+import { callAppsScript } from "@/lib/apps-script";
 
 type RsvpPayload = {
   type: "RSVP";
@@ -19,10 +21,6 @@ type GamePayload = {
 };
 
 type SheetsPayload = RsvpPayload | GamePayload;
-
-function isPlaceholder(url: string | undefined): boolean {
-  return !url || url.includes("PASTE_YOUR") || !url.startsWith("https://");
-}
 
 function validate(body: unknown): SheetsPayload | null {
   if (!body || typeof body !== "object") return null;
@@ -68,34 +66,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const scriptUrl = process.env.CG_FUN_AppScript;
-  if (isPlaceholder(scriptUrl)) {
-    console.warn(`[api/sheets] CG_FUN_AppScript is not set — mocking ${payload.type} submission.`);
-    return NextResponse.json({ result: "success", mocked: true });
+  if (payload.type === "GAME" && !GAME_ENABLED) {
+    return NextResponse.json({ result: "error", error: "Game is disabled" }, { status: 404 });
   }
 
-  try {
-    // Apps Script needs text/plain (avoids a CORS preflight) and follows a 302 to the result URL.
-    const res = await fetch(scriptUrl!, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ ...payload, timestamp: new Date().toISOString() }),
-      redirect: "follow",
-      cache: "no-store",
-    });
-
-    const text = await res.text();
-    let data: unknown;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = { result: res.ok ? "success" : "error", raw: text.slice(0, 500) };
-    }
-    return NextResponse.json(data, { status: res.ok ? 200 : 502 });
-  } catch (err) {
-    return NextResponse.json(
-      { result: "error", error: err instanceof Error ? err.message : "Upstream request failed" },
-      { status: 502 },
-    );
-  }
+  const { status, data } = await callAppsScript(payload);
+  return NextResponse.json(data, { status });
 }

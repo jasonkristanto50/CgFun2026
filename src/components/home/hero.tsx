@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Lock, ShieldCheck, Terminal } from "lucide-react";
+import { ArrowRight, Lock, ShieldCheck, Users } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { EVENT } from "@/config/event";
@@ -112,11 +112,11 @@ export function Hero() {
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </a>
         <Link
-          href="/game"
+          href="/tim"
           className="group flex items-center justify-center gap-2 rounded-md border border-emerald-500/50 bg-emerald-500/5 px-5 py-3.5 font-mono text-xs font-semibold tracking-wider text-emerald-300 transition active:scale-[0.98] hover:bg-emerald-500/15"
         >
-          <Terminal className="h-4 w-4" />
-          BUKA TERMINAL MISI (HARI H)
+          <Users className="h-4 w-4" />
+          LIHAT PEMBAGIAN TIM
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
         </Link>
       </div>

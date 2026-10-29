@@ -5,6 +5,7 @@ import { useState } from "react";
 import { RulesList, ScoringTable } from "@/components/shared/rules-list";
 import { Corners, Section } from "@/components/ui/hud";
 import { Modal } from "@/components/ui/modal";
+import { GAME_ENABLED } from "@/config/game";
 
 // Positions are percentages of the map card.
 const CHECKPOINTS = [
@@ -96,20 +97,25 @@ export function SectorMap() {
         </figcaption>
       </figure>
 
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="group mt-5 flex w-full items-center justify-center gap-2 rounded-md border border-emerald-500/50 bg-emerald-500/5 px-5 py-3 font-mono text-xs font-semibold tracking-wider text-emerald-300 transition active:scale-[0.98] hover:bg-emerald-500/15"
-      >
-        Lihat Briefing &amp; Aturan Main <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-      </button>
+      {/* Rules & scoring belong to the web game; hidden while it is switched off. */}
+      {GAME_ENABLED && (
+        <>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="group mt-5 flex w-full items-center justify-center gap-2 rounded-md border border-emerald-500/50 bg-emerald-500/5 px-5 py-3 font-mono text-xs font-semibold tracking-wider text-emerald-300 transition active:scale-[0.98] hover:bg-emerald-500/15"
+          >
+            Lihat Briefing &amp; Aturan Main <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+          </button>
 
-      <Modal open={open} onClose={() => setOpen(false)} title="// BRIEFING & ATURAN MAIN">
-        <p className="mb-3 font-display text-sm font-bold tracking-wider text-slate-50">8 ATURAN RESMI OPERASI</p>
-        <RulesList />
-        <p className="mb-3 mt-6 font-display text-sm font-bold tracking-wider text-slate-50">SISTEM SKOR</p>
-        <ScoringTable />
-      </Modal>
+          <Modal open={open} onClose={() => setOpen(false)} title="// BRIEFING & ATURAN MAIN">
+            <p className="mb-3 font-display text-sm font-bold tracking-wider text-slate-50">8 ATURAN RESMI OPERASI</p>
+            <RulesList />
+            <p className="mb-3 mt-6 font-display text-sm font-bold tracking-wider text-slate-50">SISTEM SKOR</p>
+            <ScoringTable />
+          </Modal>
+        </>
+      )}
     </Section>
   );
 }

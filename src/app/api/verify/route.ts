@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
-import { OPTION_KEYS, type OptionKey } from "@/config/game";
+import { GAME_ENABLED, OPTION_KEYS, type OptionKey } from "@/config/game";
 import { FINAL_VAULT_CODE, MISSIONS } from "@/config/missions";
 
 // Answers stay on the server; the phone only learns a digit after answering correctly.
 export async function POST(request: Request) {
+  if (!GAME_ENABLED) {
+    return NextResponse.json({ error: "Game is disabled" }, { status: 404 });
+  }
+
   let body: Record<string, unknown>;
   try {
     body = (await request.json()) as Record<string, unknown>;
